@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casa de Câmbio</title>
+    <style>
+
+        body {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        .switch {
+            position: relative;
+            margin-left: 25%;
+            display: flex;
+            width: 50px;
+            height: 25px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 25px;
+            width: 25px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(25px);
+            -ms-transform: translateX(25px);
+            transform: translateX(25px);
+        }
+
+        .slider.round {
+            border-radius: 25px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        .switch .labels::after {
+            content: attr(data-off);
+            position: absolute;
+            top: 5px;
+            right: 55px;
+            color: black;
+        }
+
+        .switch .labels::before {
+            content: attr(data-on);
+            position: absolute;
+            top: 5px;
+            left: 55px;
+            color: black;
+        }
+
+        table {
+            border: 1px solid;
+            margin: 0 auto;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        table caption {
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+        table thead {
+            background-color: #ffffff;
+            color: #000000;
+            font-size: 20px;
+            
+        }
+
+        table tbody tr:nth-child(even){
+            background-color: #eeeeee;
+        }
+
+        table tbody tr:nth-child(odd){
+            background-color: #cccccc;
+        }
+
+        td, th {
+            text-align: left;
+            border: 1px solid black;
+            padding: 5px 10px 0px 5px;
+            font-size: 18px;
+        }
+
+        th {
+            font-weight: 600;
+        }
+
+        #idCurrencyExchange {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 75px 1fr;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        #idCurrencyExchange h1 {
+            grid-column: 1 / span 3;
+            grid-row: 1;
+            text-align: center;
+        }
+
+        #idSearchQuotation {
+            grid-column: 1;
+            grid-row: 2;
+            width: 50%;
+            margin-left: 45%;
+        }
+
+        #idSectionValueToBuyOrSell {
+            width: 65%;
+            margin-left: 5%;
+            vertical-align: top;
+            grid-column: 2 / span 2;
+            grid-row: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr;
+        }
+
+        #idSectionCurrency {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        #idSectionValues {
+            grid-column: 2;
+            grid-row: 1;
+            align-self: top;
+            margin: 25px 0px 0px 20px;
+        }
+
+        fieldset {
+            padding: 25px 25px 0px 25px;;
+        }
+
+        fieldset legend {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 auto;
+        }
+
+        .input-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid #a0a0a0;
+            border-radius: 2px;
+            padding-left: 0.5rem;
+            overflow: hidden;
+            font-family: sans-serif;
+            width: 80%;
+            height: 30px;
+        }
+
+        .input-box .prefix {
+            font-weight: 300;
+            font-size: 14px;
+            color: #999;
+            
+        }
+
+        .input-box input {
+            font-size: 14px;
+            border: none;
+            outline: none;
+            padding: 0.5rem;
+            
+        }
+
+        .input-box:focus-within {
+            border-color: #777;
+        }
+
+        #idCurrencyToBuyOrSell, #idCurrency, #idDate {
+            border: 1px solid #a0a0a0;
+            padding: 7px 0px 7px 5px;
+            font-size: 14px;
+            width: 85%;
+            height: 30px;
+        }
+
+        #idCurrency {
+            width: 89%;
+        }
+
+        #idDate {
+            height: 15px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="idCurrencyExchange">
+
+        <h1>Casa de Câmbio RG</h1>
+
+        <fieldset id="idSearchQuotation">
+            <legend>Buscar Cotações</legend> 
+                
+                <label for="idCurrency">Selecione a sua Moeda</label> <br>
+                <select id="idCurrency" name="nmCurrency"></select> 
+                <br><br>
+
+                <label for="idDate">Selecione a Data da Cotação</label> <br>
+                <input type="date" id="idDate" name="nmDate" value="">
+                <br><br>
+
+                <output id="idFieldMessage"></output>
+
+        </fieldset>
+
+        <fieldset id="idSectionValueToBuyOrSell">
+            <legend>Central de Compra e Venda</legend>
+
+            <div id="idSectionCurrency">
+                <label for="idCurrencyToBuyOrSell">Selecione a Moeda para Câmbio </label> <br>
+                <select id="idCurrencyToBuyOrSell" name="nmCurrencyToBuyOrSell"></select> 
+                <br><br>
+
+                <label for="idBuyQuotationCurrency">Cotação de Compra Vigente</label> <br>
+                <div class="input-box">
+                    <span class="prefix currencyTochange"></span>
+                    <input type="number" id="idBuyQuotationCurrency" name="nmBuyQuotationCurrency" readonly>
+                </div>
+                <br>
+
+                <label for="idSellQuotationCurrency">Cotação de Venda Vigente</label> <br>
+                <div class="input-box">
+                    <span class="prefix currencyTochange"></span>
+                    <input type="number" id="idSellQuotationCurrency" name="nmSellQuotationCurrency" readonly>
+                </div>
+                
+                <br><br>
+            </div>
+            
+            <div id="idSectionValues">
+                <label class="switch">
+                    <input type="checkbox" id="idBuyOrSellOption" checked>
+                    <span class="slider round"></span>
+                    <span class="labels" data-on="Comprar" data-off="Vender"></span>
+                </label>
+                <br>
+
+                <label for="idValue" id="idLabelValue">Informe o valor que deseja comprar</label> <br>
+                <div class="input-box"> 
+                    <span class="prefix currencyTochange"></span>
+                    <input type="text" id="idValue" name="nmValue" maxlength="21">
+                </div> 
+                <br>
+
+                <label for="idValueToPayOrReceive" id="idLabelValueToPayOrReceive">Valor a ser pago</label> <br>
+                <div class="input-box">
+                    <span class="prefix currency"></span>
+                    <input type="text" id="idValueToPayOrReceive" name="nmValueToPayOrReceive" readonly>   
+                </div>
+                 
+            </div>   
+        </fieldset>
+    </div>      
+    <br>
+
+    <div id="idQuotationTable">
+
+    </div>
+    
+    <script>
+
+        var responseAllCurrencies;
+        var currencyOptions;
+        var allQuotations = [];
+        var isComma = false;
+
+        var selectCurrency = document.getElementById("idCurrency");
+        var fieldDate = document.getElementById("idDate");
+        var fieldMessage = document.getElementById("idFieldMessage");
+
+        var selectCurrencyToChange = document.getElementById("idCurrencyToBuyOrSell");
+        var fieldBuyQuotation = document.getElementById("idBuyQuotationCurrency");
+        var fieldSellQuotation = document.getElementById("idSellQuotationCurrency");
+        
+        var switchBuyOrSell = document.getElementById("idBuyOrSellOption");
+        var fieldValue = document.getElementById("idValue");
+        var fieldValueToPayOrReceive = document.getElementById("idValueToPayOrReceive");
+
+        document.addEventListener("DOMContentLoaded", requestOptions);
+
+        selectCurrency.addEventListener("change", convertQuotations);
+
+        selectCurrencyToChange.addEventListener("change", convertQuotations);
+
+        fieldDate.addEventListener("change", async function(){
+            responseAllCurrencies = await requestAllQuotations();
+            if (responseAllCurrencies[0].value.length > 0) {
+                convertQuotations();
+            } else {
+                fieldMessage.value = "Não há cotações para esta data, as cotações da última data selecionada foram mantidas";
+                setTimeout(() => {
+                    fieldMessage.value = "";
+                }, 5000);
+            }
+        });
+
+        switchBuyOrSell.addEventListener("change", function() {
+
+            if (switchBuyOrSell.checked) {
+                document.getElementById("idLabelValue").innerHTML = "Informe o valor que deseja comprar";
+                document.getElementById("idLabelValueToPayOrReceive").innerHTML = "Valor a ser pago";
+            } else {
+                document.getElementById("idLabelValue").innerHTML = "Informe o valor que deseja vender";
+                document.getElementById("idLabelValueToPayOrReceive").innerHTML = "Valor a receber";
+            }
+
+            calcValues();
+        });
+
+        fieldValue.addEventListener("keydown", allowNumbersOnly);
+        fieldValue.addEventListener("input", calcValues);
+
+        function allowNumbersOnly(event) {
+            var code = event.which;
+            
+            if ((code < 48 || code > 57) && (code < 96 || code > 105) && (code != 188) && (code != 110) && (code != 8) && (code != 37) && (code != 39)) {
+                event.preventDefault();
+            }  
+
+            if ((fieldValue.value.indexOf(",") >= 0) && (code == 110) && (code != 188)) {
+                event.preventDefault();
+            }
+        };
+
+        function calcValues() {
+            
+            var valueToCalc = convertStringToNumber(fieldValue.value);
+            
+            if (switchBuyOrSell.checked) {
+                fieldValueToPayOrReceive.value = formatDisplayedNumber(Number((fieldSellQuotation.value * valueToCalc).toFixed(4)), 1);
+            } else {
+                fieldValueToPayOrReceive.value = formatDisplayedNumber(Number((fieldBuyQuotation.value * valueToCalc).toFixed(4)), 1);
+            }  
+
+            fieldValue.value = formatDisplayedNumber(valueToCalc); 
+        }
+
+        function convertStringToNumber(number){
+            while (number.indexOf(".") > 0) {
+                number = number.replace(".","");
+            }
+
+            if (number.indexOf(",") > 0) {
+                number = number.replace(",",".");
+                isComma = true;
+            } else {
+                isComma = false;
+            }
+
+            return Number(number);
+        }
+
+        function formatDisplayedNumber(number, option) {
+
+            number = number.toString();
+            var numberFormated = "";
+            
+            if ((number.indexOf(".") < 0) && (isComma) && (option != 1)) {
+                number += ",";
+            } else {
+                number = number.replace(".",",");
+            }
+            
+            if (number.indexOf(",") > 0) {
+                var numberArray = number.split(",");
+                var beforeComma = numberArray[0];
+                var afterComma = numberArray[1];
+                numberFormated = beforeComma.replace(/(?=(?:\d{3})+$)(?!^)/g, '.');
+                    if ((afterComma.length == 1) && (option == 1)) {
+                    numberFormated += "," + afterComma + "0";
+                    } else {
+                        numberFormated += "," + afterComma;
+                    }
+            } else {
+
+                if (option == 1) {
+                    numberFormated = number.replace(/(?=(?:\d{3})+$)(?!^)/g, '.') + ",00";
+                } else {
+                    numberFormated = number.replace(/(?=(?:\d{3})+$)(?!^)/g, '.');
+                }
+            }
+           
+            return numberFormated;
+        }
+
+        async function requestOptions() {
+
+            var response = await fetch("https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/Moedas?$top=100&$format=json&$select=simbolo,nomeFormatado");
+
+            response = response.json();
+
+            currencyOptions = await response;
+
+            createSelect(response, selectCurrency);
+            createSelect(response, selectCurrencyToChange);
+            
+            responseAllCurrencies = await requestAllQuotations();
+            convertQuotations();
+
+        }
+
+        async function createSelect(response, select) {
+
+            var currency = await response;
+
+            if (select == selectCurrency) {
+                var newOption = new Option("Real Brasileiro", "BRL");
+                select.add(newOption, undefined);
+            }
+            
+            currency.value.forEach(element => {
+                element.nomeFormatado = capitalizeFirstLetter(element.nomeFormatado);
+                var newOption = new Option(element.nomeFormatado, element.simbolo);
+                select.add(newOption, undefined);
+            });
+
+            if (select == selectCurrencyToChange) {
+                var newOption = new Option("Real Brasileiro", "BRL");
+                select.add(newOption, undefined);
+            }
+            
+        }
+
+        async function getLastValidDate() {
+
+            var allCurrencies = await currencyOptions;
+            var currency = allCurrencies.value[0].simbolo;
+            
+            var decreaseDays = 1;
+            var decreaseMonths = 0;
+            var decreaseYears = 0;
+            var calendar = new Date();
+            var day = calendar.getDate();
+            var month = calendar.getMonth() + 1;
+            var year = calendar.getFullYear();
+            var date;
+
+            date = year + "-";
+            date += "0" + month + "-";
+            
+            if (day < 10) {
+                date += "0" + day;
+            } else {
+                date += day;
+            }
+
+            fieldDate.value = date;
+            date = convertDate(date);
+
+            var response = await requestQuotation(currency, date);
+
+            while (response.value.length == 0) {
+
+                var dayDecreased = day - decreaseDays;
+                var monthDecreased = month - decreaseMonths;
+                var yearDecreased = year - decreaseYears;
+
+                if (dayDecreased == 0) {
+                    decreaseMonths++;
+                    decreaseDays = 1;
+                    monthDecreased = month - decreaseMonths;
+
+                    if (monthDecreased == 0) {
+                        month = 12;
+                        decreaseMonths = 0;
+                        monthDecreased = 12;
+                        decreaseYears++;
+                        yearDecreased = year - decreaseYears;
+                    } else {
+                        decreaseMonths++;
+                    }
+
+                    if (monthDecreased == 2) {
+                        day = 28;
+                    } else if ((monthDecreased == 4) || (monthDecreased == 6) || (monthDecreased == 9) || (monthDecreased == 11)) {
+                        day = 30;
+                    } else {
+                        day = 31;
+                    }
+
+                    dayDecreased = day;
+                }
+
+                date = yearDecreased + "-";
+                date += "0" + monthDecreased + "-";
+                if (dayDecreased < 10) {
+                    date += "0" + dayDecreased;
+                } else {
+                    date += dayDecreased;
+                }
+
+                decreaseDays++;
+
+                fieldDate.value = date;
+                date = convertDate(date);
+
+                response = await requestQuotation(currency, date);
+            }
+
+            return date;
+
+        }
+
+        async function requestAllQuotations() {
+
+            allQuotations = []
+            var allCurrencies = await currencyOptions;
+            var date;
+            
+            if (fieldDate.value == "") {
+                date = await getLastValidDate();
+            } else {
+                date = fieldDate.value;
+                date = convertDate(date);
+            }
+
+            for (let index = 0; index < allCurrencies.value.length; index++) {
+                
+                var currency = allCurrencies.value[index].simbolo;
+
+                var quotation = await requestQuotation(currency, date);
+                
+                allQuotations.push(quotation); 
+            }  
+
+            return allQuotations;
+
+        }
+
+        async function requestQuotation(currency, date) {
+
+            var response = await fetch ("https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaDia(moeda=@moeda,dataCotacao=@dataCotacao)?@moeda='"
+                                    + currency +"'&@dataCotacao='"+ date +"'&$top=100&$format=json&$select=cotacaoCompra,cotacaoVenda,dataHoraCotacao,tipoBoletim");
+
+            response = response.json()
+
+            return response; 
+        }
+
+        async function convertQuotations() {
+
+            const valueOfReal = {cotacaoCompra: 1 , cotacaoVenda: 1};
+
+            var currencyNames = await JSON.parse(JSON.stringify(currencyOptions));
+            var quotationPanel =  await JSON.parse(JSON.stringify(responseAllCurrencies));
+
+            var quotationObject = [];
+            var convertedQuotationObject = [];
+            
+            var selectedCurrency = selectCurrency.options[selectCurrency.selectedIndex];
+            var selectedCurrencyToChange = selectCurrencyToChange.options[selectCurrencyToChange.selectedIndex];
+            var selectedCurrencyBuyQuotation;
+            var selectedCurrencySellQuotation;
+
+            var inputPrefix = document.getElementsByClassName("currencyTochange");
+            for (let index = 0; index < inputPrefix.length; index++) {
+                inputPrefix[index].innerHTML = selectCurrencyToChange.value;
+                
+            }
+            document.getElementsByClassName("currency")[0].innerHTML = selectedCurrency.value;
+            
+            for (let index = 0; index < quotationPanel.length; index++) {
+                quotationObject[index] = quotationPanel[index].value[quotationPanel[index].value.length - 1];
+                quotationObject[index].nomeFormatado = currencyNames.value[index].nomeFormatado;
+            }
+
+            quotationObject.unshift(valueOfReal);
+            quotationObject[0].dataHoraCotacao = quotationObject[1].dataHoraCotacao;
+            quotationObject[0].tipoBoletim = quotationObject[1].tipoBoletim;
+            quotationObject[0].nomeFormatado = "Real Brasileiro";
+            
+            quotationObject.forEach((element, index) => {
+                
+                if (element.nomeFormatado == selectedCurrency.text) {
+                    selectedCurrencyBuyQuotation = element.cotacaoCompra;
+                    selectedCurrencySellQuotation = element.cotacaoVenda;
+                    var quotation = quotationObject.splice(index, 1);
+                    quotationObject.unshift(quotation[0]);
+                }
+            });
+
+            convertedQuotationObject = JSON.parse(JSON.stringify(quotationObject));
+
+            convertedQuotationObject.forEach(element => {
+                var buyQuotation = element.cotacaoCompra;
+                var sellQuotation = element.cotacaoVenda;
+                element.cotacaoCompra = Number((buyQuotation / selectedCurrencyBuyQuotation).toFixed(4));
+                element.cotacaoVenda = Number((sellQuotation / selectedCurrencySellQuotation).toFixed(4));
+            });
+
+            convertedQuotationObject.forEach(element => {
+                if (element.nomeFormatado == selectedCurrencyToChange.text) {
+                    fieldBuyQuotation.value = element.cotacaoCompra;
+                    fieldSellQuotation.value = element.cotacaoVenda;
+                }
+            });
+
+            createTable(convertedQuotationObject);
+            calcValues();
+            
+        }
+
+        function createTable(object) {
+           
+            var divTable = document.getElementById("idQuotationTable");
+            while (divTable.firstChild) {
+                divTable.removeChild(divTable.firstChild);
+            }  
+
+            var table = document.createElement('table');
+            table.id = "idQuotationTable";
+            var legend = document.createElement('caption');
+            legend.innerHTML = "Painel de Cotações";
+            var thead = table.createTHead();
+            var theadRow = thead.insertRow();
+            
+            var titles = ["Nome da Moeda", "Cotação de Compra", "Cotação de Venda", "Tipo de Boletim", "Data e Hora da Cotação"];
+
+            titles.forEach(element => {
+                var th = document.createElement('th');
+                th.innerHTML = element;
+                theadRow.appendChild(th);
+            });
+
+            thead.appendChild(theadRow);
+            var tbody = table.createTBody();            
+
+            object.forEach(element => {
+                var tBodyRow = tbody.insertRow();
+                var infos = [element.nomeFormatado ,element.cotacaoCompra, element.cotacaoVenda, element.tipoBoletim, element.dataHoraCotacao];
+
+                infos.forEach(element => {
+                    var td = tBodyRow.insertCell();
+                    td.innerHTML = element;
+                    tBodyRow.appendChild(td);
+                });
+                
+                tbody.appendChild(tBodyRow);  
+            });
+
+            table.appendChild(legend);
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            document.getElementById("idQuotationTable").appendChild(table);
+        }
+
+        function capitalizeFirstLetter(phrase) {
+
+            var words = String(phrase).split(" ");
+            phrase = "";
+
+            words.forEach(element => {
+                phrase += element.charAt(0).toUpperCase() + element.slice(1) + " ";
+            });
+
+            phrase = phrase.slice(0, -1);
+
+            return phrase;
+        }
+
+        function convertDate(date) {
+
+            var dates = String(date).split('-');
+
+            date = "";
+            date += dates[1] + "-";
+            date += dates[2] + "-";
+            date += dates[0];
+            
+            return date;
+        }
+
+    </script>
+
+</body>
+</html>
